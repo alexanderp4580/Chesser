@@ -18,7 +18,7 @@ pluginManagement {
 
 plugins {
     // See https://jmfayard.github.io/refreshVersions
-    id("de.fayard.refreshVersions") version "0.10.0"
+    id("de.fayard.refreshVersions") version "0.10.1"
 }
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
@@ -27,7 +27,12 @@ rootProject.name = ("chesser")
 val repoRootDir: File = rootProject.projectDir
 
 val projects = listOf(
-    "app", "common"
+    "app",
+    "common",
+    "core",
+    "ui/mainUI",
+    "ui/homeUI",
+    "ui/timerUI"
 ).map {
     "$it/build.gradle.kts"
 }

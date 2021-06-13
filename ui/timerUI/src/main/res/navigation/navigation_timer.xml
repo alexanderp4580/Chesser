@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navigation_timer"
+    app:startDestination="@id/timerSettingsFragment">
+
+    <fragment
+        android:id="@+id/timerSettingsFragment"
+        android:name="com.alexanderp.chesser.timerUI.TimerSettingsFragment">
+        <argument
+            android:name="dummyArg"
+            android:defaultValue=""
+            app:argType="string" />
+    </fragment>
+</navigation>

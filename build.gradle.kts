@@ -7,7 +7,7 @@ plugins {
     kotlin("android") apply false
     id("io.gitlab.arturbosch.detekt")
     id("org.jlleitschuh.gradle.ktlint")
-    id("org.jetbrains.dokka") version "1.4.32"
+    id("org.jetbrains.dokka")
 }
 
 allprojects {
@@ -15,6 +15,16 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+    }
+}
+
+
+buildscript {
+    dependencies {
+        classpath(Google.Dagger.hilt.android.gradlePlugin)
+        classpath(AndroidX.navigation.safeArgsGradlePlugin)
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:_")
+        classpath("com.android.tools.build:gradle:_")
     }
 }
 
@@ -102,9 +112,22 @@ subprojects {
             val testImplementation by configurations
             val androidTestImplementation by configurations
 
-            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:_")
-            implementation("io.github.microutils:kotlin-logging:_")
+            // AndroidX
+            implementation(AndroidX.core.ktx)
 
+            // Kotlin
+            implementation(KotlinX.coroutines.core)
+
+            // Utils
+            implementation("io.github.microutils:kotlin-logging:_")
+            implementation("org.slf4j:slf4j-api:_")
+            implementation("com.github.tony19:logback-android:_")
+
+            // DI
+            implementation(Google.Dagger.hilt.android)
+            "kapt"(Google.Dagger.hilt.compiler)
+
+            // Test
             testImplementation(Kotlin.Test.junit)
 
             androidTestImplementation(AndroidX.test.ext.junit)

@@ -1,11 +1,16 @@
 plugins {
     id("com.android.application")
     kotlin("android")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
     buildFeatures {
         viewBinding = true
+    }
+
+    hilt {
+        enableAggregatingTask = true
     }
 
     defaultConfig {
@@ -14,9 +19,9 @@ android {
 }
 
 dependencies {
-    api(projects.common)
+    implementation(projects.core)
+    implementation(projects.mainUI)
 
-    implementation(AndroidX.core)
+    // AndroidX
     implementation(AndroidX.appCompat)
-    implementation(AndroidX.constraintLayout)
 }

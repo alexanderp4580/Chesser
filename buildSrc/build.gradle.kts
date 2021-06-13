@@ -7,6 +7,5 @@ repositories {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:_")
-    implementation("com.android.tools.build:gradle:_")
+    compileOnly(gradleKotlinDsl())
 }
