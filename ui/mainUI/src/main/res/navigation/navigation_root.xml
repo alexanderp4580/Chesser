@@ -7,10 +7,6 @@
     <action
         android:id="@+id/action_homeFragment_to_timerSettingsFragment"
         app:destination="@id/navigation_timer">
-        <argument
-            android:name="dummyArg"
-            android:defaultValue=""
-            app:argType="string" />
     </action>
 
     <include app:graph="@navigation/navigation_home" />

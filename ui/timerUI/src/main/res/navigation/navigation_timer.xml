@@ -7,9 +7,5 @@
     <fragment
         android:id="@+id/timerSettingsFragment"
         android:name="com.alexanderp.chesser.timerUI.TimerSettingsFragment">
-        <argument
-            android:name="dummyArg"
-            android:defaultValue=""
-            app:argType="string" />
     </fragment>
 </navigation>

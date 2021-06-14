@@ -10,11 +10,17 @@ android {
 }
 
 dependencies {
+    implementation(projects.timer)
+    implementation(projects.commonUI)
+    implementation(projects.common)
+
     // AndroidX
     implementation(AndroidX.lifecycle.viewModelKtx)
     implementation(AndroidX.fragmentKtx)
     implementation(AndroidX.constraintLayout)
     implementation(AndroidX.core.ktx)
+    implementation(Google.Android.Material)
+    implementation(AndroidX.cardView)
 
     implementation(AndroidX.navigation.fragmentKtx)
     implementation(AndroidX.navigation.uiKtx)

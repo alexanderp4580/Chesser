@@ -29,10 +29,11 @@ val repoRootDir: File = rootProject.projectDir
 val projects = listOf(
     "app",
     "common",
-    "core",
+    "ui/commonUI",
     "ui/mainUI",
     "ui/homeUI",
-    "ui/timerUI"
+    "ui/timerUI",
+    "domain/timer",
 ).map {
     "$it/build.gradle.kts"
 }

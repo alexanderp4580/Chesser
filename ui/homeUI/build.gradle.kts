@@ -10,6 +10,7 @@ android {
 }
 
 dependencies {
+    implementation(projects.commonUI)
     implementation(projects.timerUI)
 
     // AndroidX
