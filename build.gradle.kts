@@ -129,7 +129,11 @@ subprojects {
 
             // Test
             testImplementation("io.mockk:mockk:_")
+            // TODO: Fix double binding. logback-android doesn't support unit tests without Robolectric, fallback to classic.
+            testImplementation("ch.qos.logback:logback-classic:_")
             testImplementation(Kotlin.Test.junit)
+            testImplementation(KotlinX.coroutines.test)
+            testImplementation(AndroidX.archCore.testing)
 
             androidTestImplementation(AndroidX.test.ext.junit)
             androidTestImplementation(AndroidX.test.ext.junitKtx)

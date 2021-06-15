@@ -1,9 +1,7 @@
 package com.alexanderp.chesser.timer.usecases
 
 import com.alexanderp.chesser.common.models.GameTimerState
-import com.alexanderp.chesser.common.models.TimerConfig
 import com.alexanderp.chesser.timer.controllers.GameTimerController
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 

@@ -1,6 +1,7 @@
 package com.alexanderp.chesser.timer.controllers
 
 import com.alexanderp.chesser.common.models.ActivePlayer
+import com.alexanderp.chesser.common.models.GameTime
 import com.alexanderp.chesser.common.models.GameTimerState
 import com.alexanderp.chesser.common.models.TimerConfig
 import kotlinx.coroutines.CoroutineDispatcher
@@ -12,7 +13,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import mu.KotlinLogging
 import javax.inject.Inject
-import kotlin.time.Duration
 import kotlin.time.Duration.Companion.ZERO
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
@@ -25,8 +25,8 @@ internal class GameTimerController @Inject constructor(
     private val coroutineScope = CoroutineScope(coroutineDispatcher)
     private val logger = KotlinLogging.logger {}
 
-    private var currentGameState = DEFAULT_GAME_TIMER_STATE
-    private val _gameTimerStateFlow: MutableStateFlow<GameTimerState> = MutableStateFlow(currentGameState)
+    private lateinit var currentGameState: GameTimerState
+    private val _gameTimerStateFlow: MutableStateFlow<GameTimerState> = MutableStateFlow(GameTimerState.Undefined)
     val gameTimerStateFlow: StateFlow<GameTimerState> = _gameTimerStateFlow
     lateinit var currentTimerConfig: TimerConfig
     private var tickerJob: Job? = null
@@ -36,7 +36,7 @@ internal class GameTimerController @Inject constructor(
         currentTimerConfig = timerConfig
 
         // Set initial game state.
-        currentGameState = GameTimerState(timerConfig.startTime, timerConfig.startTime, false, ActivePlayer.PlayerOne)
+        currentGameState = GameTimerState.Ready(GameTime(timerConfig.startTime, timerConfig.startTime))
         updateGameTimerState()
     }
 
@@ -46,20 +46,26 @@ internal class GameTimerController @Inject constructor(
         tickerJob?.cancel()
     }
 
-    fun timerButtonClicked(activePlayer: ActivePlayer) {
-        logger.info { "timerButtonClicked. $activePlayer" }
+    fun timerButtonClicked(newActivePlayer: ActivePlayer) {
+        logger.info { "timerButtonClicked. $newActivePlayer" }
 
-        if (!currentGameState.isGamePlaying) {
-            currentGameState = currentGameState.copy(isGamePlaying = true)
-            launchTicker()
-        } else {
-            // Restart timer to give full second to every player.
-            resetTicker()
+        when (val state = currentGameState) {
+            is GameTimerState.Ready -> {
+                currentGameState = GameTimerState.Playing(state.gameTime, newActivePlayer)
+                launchTicker()
+            }
+            is GameTimerState.Playing -> {
+                if (state.activePlayer == newActivePlayer) {
+                    logger.error { "Same player clicked twice." }
+                    return
+                }
+                addIncrement(state.copy(activePlayer = newActivePlayer))
+
+                // Restart timer to give full second to every player.
+                resetTicker()
+            }
+            else -> Unit
         }
-
-        addIncrement()
-
-        currentGameState = currentGameState.copy(activePlayer = activePlayer)
         updateGameTimerState()
     }
 
@@ -81,47 +87,47 @@ internal class GameTimerController @Inject constructor(
 
     private fun onTick() {
         logger.info { "onTick" }
-        decreaseSecondFromActivePlayer()
+        val state = currentGameState
+        if (state is GameTimerState.Playing) {
+            decreaseSecond(state)
+        }
         updateGameTimerState()
     }
 
-    private fun addIncrement() {
-        val activePlayer = currentGameState.activePlayer
+    private fun addIncrement(state: GameTimerState.Playing) {
+        currentTimerConfig.increment.takeIf { it.isPositive() }?.let { increment ->
+            logger.info { "Adding Increment $increment" }
+            val playerOneIncrease = if (state.activePlayer == ActivePlayer.PlayerOne) increment else ZERO
+            val playerTwoIncrease = if (state.activePlayer == ActivePlayer.PlayerTwo) increment else ZERO
+            val newGameTime = GameTime(
+                playerOneTime = state.gameTime.playerOneTime + playerOneIncrease,
+                playerTwoTime = state.gameTime.playerTwoTime + playerTwoIncrease
+            )
 
-        logger.info { "Decreasing one second from $activePlayer" }
-        currentGameState = when (activePlayer) {
-            ActivePlayer.PlayerOne -> currentGameState.copy(playerOneTime = currentGameState.playerOneTime + currentTimerConfig.increment)
-            ActivePlayer.PlayerTwo -> currentGameState.copy(playerTwoTime = currentGameState.playerTwoTime + currentTimerConfig.increment)
+            currentGameState = state.copy(gameTime = newGameTime)
         }
     }
 
-    private fun decreaseSecondFromActivePlayer() {
-        val activePlayer = currentGameState.activePlayer
+    private fun decreaseSecond(state: GameTimerState.Playing) {
+        logger.info { "Decreasing one second from ${state.activePlayer}" }
+        val playerOneDecrease = if (state.activePlayer == ActivePlayer.PlayerOne) seconds(1) else ZERO
+        val playerTwoDecrease = if (state.activePlayer == ActivePlayer.PlayerTwo) seconds(1) else ZERO
+        val newGameTime = GameTime(
+            playerOneTime = state.gameTime.playerOneTime - playerOneDecrease,
+            playerTwoTime = state.gameTime.playerTwoTime - playerTwoDecrease
+        )
 
-
-        logger.info { "Decreasing one second from $activePlayer" }
-        currentGameState = when (activePlayer) {
-            ActivePlayer.PlayerOne -> currentGameState.copy(playerOneTime = currentGameState.playerOneTime - seconds(1))
-            ActivePlayer.PlayerTwo -> currentGameState.copy(playerTwoTime = currentGameState.playerTwoTime - seconds(1))
-        }
-
-        if (currentGameState.playerOneTime == ZERO || currentGameState.playerTwoTime == ZERO) {
-            logger.info { "Game ended. Winner is ${activePlayer.otherPlayer()}" }
-            currentGameState = currentGameState.copy(isGamePlaying = false)
+        currentGameState = if (newGameTime.playerOneTime == ZERO || newGameTime.playerTwoTime == ZERO) {
+            logger.info { "Game ended. Winner is ${state.activePlayer.otherPlayer()}" }
             endGame()
+            GameTimerState.Ended(newGameTime)
+        } else {
+            state.copy(gameTime = newGameTime)
         }
     }
 
     private fun updateGameTimerState() {
+        logger.info("Sending game state: $currentGameState")
         _gameTimerStateFlow.value = currentGameState
-    }
-
-    private companion object {
-        val DEFAULT_GAME_TIMER_STATE = GameTimerState(
-            Duration.ZERO,
-            Duration.ZERO,
-            false,
-            ActivePlayer.PlayerOne
-        )
     }
 }

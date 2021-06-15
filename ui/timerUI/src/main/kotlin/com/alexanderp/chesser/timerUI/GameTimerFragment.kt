@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.alexanderp.chesser.common.models.ActivePlayer
+import com.alexanderp.chesser.common.models.GameTime
 import com.alexanderp.chesser.common.models.GameTimerState
 import com.alexanderp.chesser.common.ui.viewBinding
 import com.alexanderp.chesser.timerUI.databinding.FragmentGameTimerBinding
@@ -15,7 +16,6 @@ import com.alexanderp.chesser.timerUI.ktx.formatChessTime
 import com.alexanderp.chesser.timerUI.viewmodels.GameTimerViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import mu.KotlinLogging
-import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 
 
@@ -48,25 +48,33 @@ class GameTimerFragment : Fragment(R.layout.fragment_game_timer) {
     private fun renderGameState(gameTimerState: GameTimerState) {
         logger.info { "Rendering game timer state: $gameTimerState" }
         with(binding) {
-            playerOneTime.text = gameTimerState.playerOneTime.formatChessTime()
-            playerTwoTime.text = gameTimerState.playerTwoTime.formatChessTime()
-
-            if (gameTimerState.isGamePlaying) {
-                if (gameTimerState.activePlayer == ActivePlayer.PlayerOne) {
-                    renderPlayOneTurn()
-                } else {
-                    renderPlayTwoTurn()
-                }
-            } else {
-                if (gameTimerState.playerOneTime == Duration.ZERO || gameTimerState.playerTwoTime == Duration.ZERO) {
-                    logger.info { "End game state" }
-                    renderEndGameState()
-                } else {
-                    logger.info { "Pre game state" }
+            when (gameTimerState) {
+                is GameTimerState.Ready -> {
+                    renderTime(gameTimerState.gameTime)
                     renderPreGameState()
+                }
+                is GameTimerState.Playing -> {
+                    renderTime(gameTimerState.gameTime)
+                    if (gameTimerState.activePlayer == ActivePlayer.PlayerOne) {
+                        renderPlayOneTurn()
+                    } else {
+                        renderPlayTwoTurn()
+                    }
+                }
+                is GameTimerState.Ended -> {
+                    renderTime(gameTimerState.gameTime)
+                    renderEndGameState()
+                }
+                else -> {
+                    logger.error { "Unknown game state: $gameTimerState" }
                 }
             }
         }
+    }
+
+    private fun FragmentGameTimerBinding.renderTime(gameTime: GameTime) {
+        playerOneTime.text = gameTime.playerOneTime.formatChessTime()
+        playerTwoTime.text = gameTime.playerTwoTime.formatChessTime()
     }
 
     private fun FragmentGameTimerBinding.renderPlayTwoTurn() {
