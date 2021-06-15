@@ -4,8 +4,25 @@
     android:id="@+id/navigation_timer"
     app:startDestination="@id/timerSettingsFragment">
 
+
+    <action
+        android:id="@+id/action_timerSettingsFragment_to_gameTimerFragment"
+        app:destination="@id/gameTimerFragment">
+        <argument
+            android:name="timerConfig"
+            app:argType="com.alexanderp.chesser.common.models.TimerConfig" />
+    </action>
+
     <fragment
         android:id="@+id/timerSettingsFragment"
-        android:name="com.alexanderp.chesser.timerUI.TimerSettingsFragment">
+        android:name="com.alexanderp.chesser.timerUI.TimerSettingsFragment" />
+
+    <fragment
+        android:id="@+id/gameTimerFragment"
+        android:name="com.alexanderp.chesser.timerUI.GameTimerFragment">
+
+        <argument
+            android:name="timerConfig"
+            app:argType="com.alexanderp.chesser.common.models.TimerConfig" />
     </fragment>
 </navigation>

@@ -1,5 +1,7 @@
 package com.alexanderp.chesser.common.models
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 
@@ -9,4 +11,5 @@ import kotlin.time.ExperimentalTime
  * This will contain all necessary information to create the timer and display the settings.
  */
 @OptIn(ExperimentalTime::class)
-data class TimerConfig constructor(val name: String, val startTime: Duration, val delay: Duration)
+@Parcelize
+data class TimerConfig(val name: String, val startTime: Duration, val increment: Duration) : Parcelable

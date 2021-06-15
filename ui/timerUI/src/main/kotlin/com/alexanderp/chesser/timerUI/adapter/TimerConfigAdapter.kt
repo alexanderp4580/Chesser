@@ -6,12 +6,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alexanderp.chesser.common.models.TimerConfig
 import com.alexanderp.chesser.timerUI.databinding.TimerConfigItemBinding
 
-internal class TimerConfigAdapter : RecyclerView.Adapter<TimerConfigViewHolder>() {
+internal class TimerConfigAdapter constructor(
+    private val timerConfigClickListener: TimerConfigClickListener
+) : RecyclerView.Adapter<TimerConfigViewHolder>() {
     private val timerConfigs: MutableList<TimerConfig> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimerConfigViewHolder {
         val itemBinding = TimerConfigItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return TimerConfigViewHolder(itemBinding)
+        return TimerConfigViewHolder(itemBinding, timerConfigClickListener)
     }
 
     override fun onBindViewHolder(holder: TimerConfigViewHolder, position: Int) {

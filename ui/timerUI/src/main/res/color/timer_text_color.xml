@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--When Text is disabled -->
+    <item android:color="#b8b8b8" android:state_enabled="false" />
+    <!--When Button is in selected state -->
+    <item android:color="@android:color/white" android:state_selected="true" />
+    <!--Default Text Color -->
+    <item android:color="@android:color/black" />
+</selector>

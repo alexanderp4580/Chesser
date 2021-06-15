@@ -49,7 +49,8 @@ class FragmentViewBindingDelegate<T : ViewBinding>(
 
     override fun getValue(thisRef: Fragment, property: KProperty<*>): T {
         // onCreateView may be called between onDestroyView and next Main thread cycle.
-        // In this case [binding] refers to the previous fragment view. Check that binding's root view matches current fragment view
+        // In this case [binding] refers to the previous fragment view.
+        // Check that binding's root view matches current fragment view.
         if (binding != null && binding?.root !== thisRef.view) {
             binding = null
         }

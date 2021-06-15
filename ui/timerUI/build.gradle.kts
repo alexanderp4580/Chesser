@@ -21,6 +21,7 @@ dependencies {
     implementation(AndroidX.core.ktx)
     implementation(Google.Android.Material)
     implementation(AndroidX.cardView)
+    implementation(AndroidX.lifecycle.liveDataKtx)
 
     implementation(AndroidX.navigation.fragmentKtx)
     implementation(AndroidX.navigation.uiKtx)

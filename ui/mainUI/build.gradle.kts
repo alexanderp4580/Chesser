@@ -10,6 +10,7 @@ android {
 }
 
 dependencies {
+    implementation(projects.common)
     implementation(projects.commonUI)
     implementation(projects.homeUI)
     implementation(projects.timerUI)

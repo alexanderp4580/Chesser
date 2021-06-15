@@ -128,6 +128,7 @@ subprojects {
             "kapt"(Google.Dagger.hilt.compiler)
 
             // Test
+            testImplementation("io.mockk:mockk:_")
             testImplementation(Kotlin.Test.junit)
 
             androidTestImplementation(AndroidX.test.ext.junit)
