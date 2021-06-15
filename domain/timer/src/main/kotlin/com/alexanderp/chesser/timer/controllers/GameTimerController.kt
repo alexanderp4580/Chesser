@@ -97,8 +97,8 @@ internal class GameTimerController @Inject constructor(
     private fun addIncrement(state: GameTimerState.Playing) {
         currentTimerConfig.increment.takeIf { it.isPositive() }?.let { increment ->
             logger.info { "Adding Increment $increment" }
-            val playerOneIncrease = if (state.activePlayer == ActivePlayer.PlayerOne) increment else ZERO
-            val playerTwoIncrease = if (state.activePlayer == ActivePlayer.PlayerTwo) increment else ZERO
+            val playerOneIncrease = if (state.activePlayer == ActivePlayer.PlayerTwo) increment else ZERO
+            val playerTwoIncrease = if (state.activePlayer == ActivePlayer.PlayerOne) increment else ZERO
             val newGameTime = GameTime(
                 playerOneTime = state.gameTime.playerOneTime + playerOneIncrease,
                 playerTwoTime = state.gameTime.playerTwoTime + playerTwoIncrease

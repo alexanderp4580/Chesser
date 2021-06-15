@@ -82,8 +82,8 @@ internal class GameTimerControllerTest {
             val actualGameState = tested.gameTimerStateFlow.first() as GameTimerState.Playing
 
             // THEN
-            assertEquals(TEST_TIMER_CONFIG.startTime, actualGameState.gameTime.playerOneTime)
-            assertEquals(TEST_TIMER_CONFIG.startTime + TEST_TIMER_CONFIG.increment, actualGameState.gameTime.playerTwoTime)
+            assertEquals(TEST_TIMER_CONFIG.startTime, actualGameState.gameTime.playerTwoTime)
+            assertEquals(TEST_TIMER_CONFIG.startTime + TEST_TIMER_CONFIG.increment, actualGameState.gameTime.playerOneTime)
         }
     }
 
