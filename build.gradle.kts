@@ -18,7 +18,6 @@ allprojects {
     }
 }
 
-
 buildscript {
     dependencies {
         classpath(Google.Dagger.hilt.android.gradlePlugin)
@@ -40,7 +39,7 @@ subprojects {
     ktlint {
         debug.set(false)
         verbose.set(true)
-        android.set(true)
+        android.set(false)
         outputToConsole.set(true)
         ignoreFailures.set(false)
         enableExperimentalRules.set(true)

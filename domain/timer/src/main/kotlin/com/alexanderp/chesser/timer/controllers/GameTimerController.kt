@@ -42,7 +42,7 @@ internal class GameTimerController @Inject constructor(
 
     fun endGame() {
         logger.info { "endGame" }
-        oneSecondTickController.endTicker()
+        oneSecondTickController.stopTicker()
         tickerJob?.cancel()
     }
 
@@ -81,7 +81,7 @@ internal class GameTimerController @Inject constructor(
 
     private fun resetTicker() {
         logger.info { "resetTicker" }
-        oneSecondTickController.endTicker()
+        oneSecondTickController.stopTicker()
         oneSecondTickController.startTicker()
     }
 

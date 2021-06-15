@@ -19,7 +19,6 @@ import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
 import kotlin.time.toDuration
 
-
 @ExperimentalTime
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class GameTimerControllerTest {
@@ -116,7 +115,7 @@ internal class GameTimerControllerTest {
         tested.endGame()
 
         // THEN
-        verify { mockOneSecondTickController.endTicker() }
+        verify { mockOneSecondTickController.stopTicker() }
     }
 
     private companion object {

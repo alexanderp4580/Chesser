@@ -18,7 +18,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import mu.KotlinLogging
 import kotlin.time.ExperimentalTime
 
-
 @AndroidEntryPoint
 @OptIn(ExperimentalTime::class)
 class GameTimerFragment : Fragment(R.layout.fragment_game_timer) {
