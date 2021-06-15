@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.alexanderp.chesser.common.models.TimerConfig
 import com.alexanderp.chesser.common.ui.viewBinding
 import com.alexanderp.chesser.timerUI.adapter.TimerConfigAdapter
 import com.alexanderp.chesser.timerUI.databinding.FragmentTimerSettingsBinding
@@ -16,10 +17,8 @@ import mu.KotlinLogging
 class TimerSettingsFragment : Fragment(R.layout.fragment_timer_settings) {
     private val binding: FragmentTimerSettingsBinding by viewBinding()
     private val viewModel: TimerSettingsViewModel by viewModels()
-    private val timerConfigAdapter = TimerConfigAdapter { timerConfig ->
-        logger.info { "TimerConfig clicked. $timerConfig" }
-        findNavController().navigate(TimerSettingsFragmentDirections.actionTimerSettingsFragmentToGameTimerFragment(timerConfig))
-    }
+    private val timerConfigAdapter = TimerConfigAdapter(::onTimerConfigSelected)
+
     private val logger = KotlinLogging.logger {}
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -27,12 +26,20 @@ class TimerSettingsFragment : Fragment(R.layout.fragment_timer_settings) {
         super.onViewCreated(view, savedInstanceState)
 
         with(binding) {
-            with(timerPresetSelectionList) {
-                adapter = timerConfigAdapter
-            }
+            timerPresetSelectionList.adapter = timerConfigAdapter
         }
 
-        // Populate configurations list.
-        timerConfigAdapter.setItems(viewModel.getTimerConfigurations())
+        viewModel.timerConfigs.observe(viewLifecycleOwner, this::renderTimerConfigs)
     }
+
+    private fun onTimerConfigSelected(timerConfig: TimerConfig) {
+        logger.info { "TimerConfig clicked. $timerConfig" }
+        findNavController().navigate(TimerSettingsFragmentDirections.actionTimerSettingsFragmentToGameTimerFragment(timerConfig))
+    }
+
+    private fun renderTimerConfigs(configs: List<TimerConfig>) {
+        // Populate configurations list.
+        timerConfigAdapter.setItems(configs)
+    }
+
 }

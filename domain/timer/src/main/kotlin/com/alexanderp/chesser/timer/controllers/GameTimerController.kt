@@ -34,6 +34,7 @@ internal class GameTimerController @Inject constructor(
     fun startGame(timerConfig: TimerConfig) {
         logger.info { "startGame" }
         currentTimerConfig = timerConfig
+        stopTicker()
 
         // Set initial game state.
         currentGameState = GameTimerState.Ready(GameTime(timerConfig.startTime, timerConfig.startTime))
@@ -42,8 +43,7 @@ internal class GameTimerController @Inject constructor(
 
     fun endGame() {
         logger.info { "endGame" }
-        oneSecondTickController.stopTicker()
-        tickerJob?.cancel()
+        stopTicker()
     }
 
     fun timerButtonClicked(newActivePlayer: ActivePlayer) {
@@ -67,6 +67,11 @@ internal class GameTimerController @Inject constructor(
             else -> Unit
         }
         updateGameTimerState()
+    }
+
+    private fun stopTicker() {
+        oneSecondTickController.stopTicker()
+        tickerJob?.cancel()
     }
 
     private fun launchTicker() {

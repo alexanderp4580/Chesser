@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.navArgs
 import com.alexanderp.chesser.common.models.ActivePlayer
 import com.alexanderp.chesser.common.models.GameTime
 import com.alexanderp.chesser.common.models.GameTimerState
@@ -24,22 +23,30 @@ class GameTimerFragment : Fragment(R.layout.fragment_game_timer) {
     private val binding: FragmentGameTimerBinding by viewBinding()
     private val viewModel: GameTimerViewModel by viewModels()
     private val logger = KotlinLogging.logger {}
-    private val gameTimerFragmentArgs: GameTimerFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requireActivity().window.enableFullScreen()
+
+        viewModel.gameTimerState.observe(viewLifecycleOwner, this::renderGameState)
 
         setupBinding()
-        viewModel.startGame(gameTimerFragmentArgs.timerConfig)
-        viewModel.gameTimerState.observe(viewLifecycleOwner, this::renderGameState)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requireActivity().window.enableFullScreen()
+    }
+
+    override fun onDestroy() {
+        requireActivity().window.disableFullScreen()
+        super.onDestroy()
     }
 
     private fun setupBinding() {
         with(binding) {
             playerOneContainer.setOnClickListener { viewModel.onTimerButtonPressed(ActivePlayer.PlayerTwo) }
             playerTwoContainer.setOnClickListener { viewModel.onTimerButtonPressed(ActivePlayer.PlayerOne) }
-            timerRestartButton.setOnClickListener { viewModel.startGame(gameTimerFragmentArgs.timerConfig) }
+            timerRestartButton.setOnClickListener { viewModel.restartGame() }
         }
     }
 
@@ -110,10 +117,5 @@ class GameTimerFragment : Fragment(R.layout.fragment_game_timer) {
         playerTwoContainer.isSelected = false
         playerOneContainer.isSelected = false
         timerRestartButton.visibility = View.VISIBLE
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        requireActivity().window.disableFullScreen()
     }
 }
