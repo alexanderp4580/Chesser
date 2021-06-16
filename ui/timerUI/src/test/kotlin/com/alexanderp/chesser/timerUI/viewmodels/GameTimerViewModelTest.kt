@@ -23,7 +23,6 @@ import kotlin.test.assertEquals
 import kotlin.time.ExperimentalTime
 import kotlin.time.toDuration
 
-
 @OptIn(ExperimentalCoroutinesApi::class)
 @ExperimentalTime
 internal class GameTimerViewModelTest {

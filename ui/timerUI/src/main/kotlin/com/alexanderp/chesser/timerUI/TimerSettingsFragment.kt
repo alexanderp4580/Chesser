@@ -13,6 +13,10 @@ import com.alexanderp.chesser.timerUI.viewmodels.TimerSettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import mu.KotlinLogging
 
+/**
+ * Timer settings selection fragment, here the user can choose which timer configuration and settings are needed
+ * for the chess game.
+ */
 @AndroidEntryPoint
 class TimerSettingsFragment : Fragment(R.layout.fragment_timer_settings) {
     private val binding: FragmentTimerSettingsBinding by viewBinding()
@@ -41,5 +45,4 @@ class TimerSettingsFragment : Fragment(R.layout.fragment_timer_settings) {
         // Populate configurations list.
         timerConfigAdapter.setItems(configs)
     }
-
 }

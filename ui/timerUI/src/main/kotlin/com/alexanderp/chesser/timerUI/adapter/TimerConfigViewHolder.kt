@@ -1,6 +1,5 @@
 package com.alexanderp.chesser.timerUI.adapter
 
-import android.annotation.SuppressLint
 import androidx.recyclerview.widget.RecyclerView
 import com.alexanderp.chesser.common.models.TimerConfig
 import com.alexanderp.chesser.timerUI.databinding.TimerConfigItemBinding
@@ -18,7 +17,6 @@ internal class TimerConfigViewHolder(
 
     private val logger = KotlinLogging.logger {}
 
-    @SuppressLint("SetTextI18n")
     @OptIn(ExperimentalTime::class)
     fun bind(timerConfig: TimerConfig) {
         logger.info { "Binding: $timerConfig" }

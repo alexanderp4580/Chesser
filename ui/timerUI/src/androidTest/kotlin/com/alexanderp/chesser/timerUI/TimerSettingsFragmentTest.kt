@@ -26,6 +26,7 @@ internal class TimerSettingsFragmentTest {
 
     @Test
     fun shouldObserveTimerConfigsOnCreateView() {
+        // TODO: Finish writing test
         fragmentScenario.moveToState(Lifecycle.State.STARTED)
     }
 }

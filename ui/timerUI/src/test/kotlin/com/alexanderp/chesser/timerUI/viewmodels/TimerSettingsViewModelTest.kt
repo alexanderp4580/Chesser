@@ -39,6 +39,5 @@ internal class TimerSettingsViewModelTest {
 
     private companion object {
         val TEST_TIMER_CONFIGS = listOf(TimerConfig("Test Config", 10.toDuration(TimeUnit.SECONDS), 5.toDuration(TimeUnit.SECONDS)))
-
     }
 }

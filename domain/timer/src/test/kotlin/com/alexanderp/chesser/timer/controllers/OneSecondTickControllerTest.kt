@@ -26,7 +26,6 @@ internal class OneSecondTickControllerTest {
             val tickCounterJob = launch {
                 // THEN
                 tested.tickFlow.collect {
-                    println("test")
                     ticks += 1
                 }
             }

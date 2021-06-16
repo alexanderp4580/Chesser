@@ -6,6 +6,11 @@ import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 import kotlin.time.toDuration
 
+/**
+ * Simple static collection of various timer configs.
+ *
+ * This is a temporary solution that will be replaced by a real DB, JSON file or network call.
+ */
 internal object TimerConfigsData {
     @OptIn(ExperimentalTime::class)
     val TIMER_CONFIGS = listOf(

@@ -13,6 +13,11 @@ import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
 
+/**
+ * Tick controller for emitting an event every second.
+ *
+ * This can be used to drive the chess timer.
+ */
 @OptIn(ExperimentalTime::class)
 internal class OneSecondTickController @Inject constructor(
     coroutineDispatcher: CoroutineDispatcher

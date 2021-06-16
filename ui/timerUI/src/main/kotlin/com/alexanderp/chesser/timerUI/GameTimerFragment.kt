@@ -17,6 +17,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import mu.KotlinLogging
 import kotlin.time.ExperimentalTime
 
+/**
+ * Game timer fragment for display current game state. This fragment is in fullscreen to avoid unintentional clicks on
+ * system buttons.
+ */
 @AndroidEntryPoint
 @OptIn(ExperimentalTime::class)
 class GameTimerFragment : Fragment(R.layout.fragment_game_timer) {

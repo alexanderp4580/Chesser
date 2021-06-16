@@ -17,6 +17,11 @@ import kotlin.time.Duration.Companion.ZERO
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
 
+/**
+ * Controller for a chess timer.
+ *
+ * This class will handle game timer logic and expose current state via [MutableStateFlow].
+ */
 @OptIn(ExperimentalTime::class)
 internal class GameTimerController @Inject constructor(
     private val oneSecondTickController: OneSecondTickController,

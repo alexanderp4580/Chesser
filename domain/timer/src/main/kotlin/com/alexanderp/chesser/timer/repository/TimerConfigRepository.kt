@@ -4,6 +4,9 @@ import com.alexanderp.chesser.common.models.TimerConfig
 import com.alexanderp.chesser.timer.data.TimerConfigsData
 import mu.KotlinLogging
 
+/**
+ * Repository for accessing timer configurations.
+ */
 internal class TimerConfigRepository {
     private val logger = KotlinLogging.logger {}
 
