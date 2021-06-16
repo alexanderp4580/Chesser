@@ -67,7 +67,7 @@ subprojects {
 
             versionCode = AppSettings.APP_VERSION_CODE
             versionName = AppSettings.APP_VERSION_NAME
-            testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+            testInstrumentationRunner = "com.alexanderp.chesser.commonUI.CustomTestRunner"
         }
 
         buildTypes {
@@ -110,6 +110,7 @@ subprojects {
             val implementation by configurations
             val testImplementation by configurations
             val androidTestImplementation by configurations
+            val debugImplementation by configurations
 
             // AndroidX
             implementation(AndroidX.core.ktx)
@@ -133,11 +134,15 @@ subprojects {
             testImplementation(Kotlin.Test.junit)
             testImplementation(KotlinX.coroutines.test)
             testImplementation(AndroidX.archCore.testing)
+            debugImplementation(AndroidX.Test.runner)
 
+            debugImplementation(AndroidX.fragmentTesting)
             androidTestImplementation(AndroidX.test.ext.junit)
             androidTestImplementation(AndroidX.test.ext.junitKtx)
             androidTestImplementation(AndroidX.test.rules)
             androidTestImplementation(AndroidX.test.espresso.core)
+
+            debugImplementation(Google.Dagger.hilt.android.testing)
         }
     }
 
